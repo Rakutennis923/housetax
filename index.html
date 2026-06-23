@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>太平洋房屋友成幸福團隊 - 房地合一稅試算系統</title>
+    <style>
+        :root {
+            --primary-color: #005598;
+            --primary-hover: #00447a;
+            --secondary-color: #e11d48;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "PingFang TC", "Helvetica Neue", Helvetica, Arial, "Microsoft JhengHei", sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            border-top: 6px solid var(--primary-color);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .header-title h1 {
+            color: var(--primary-color);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header-title p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .copyright {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: right;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #334155;
+            font-size: 15px;
+        }
+
+        .label-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: normal;
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.2s;
+            background-color: #fff;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 85, 152, 0.1);
+        }
+
+        .checkbox-group {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .checkbox-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .checkbox-item input {
+            margin-top: 4px;
+        }
+
+        .btn-calc {
+            display: block;
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 20px;
+        }
+
+        .btn-calc:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .results-section {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 2px dashed #e2e8f0;
+        }
+
+        /* 大標題、粗體字要求 */
+        .result-main-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 20px;
+            border-left: 6px solid var(--secondary-color);
+            padding-left: 10px;
+        }
+
+        .result-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .result-value {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .tax-amount {
+            color: var(--secondary-color);
+            font-size: 24px;
+        }
+
+        .profit-amount {
+            color: #16a34a;
+            font-size: 24px;
+        }
+
+        .formula-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 15px;
+            font-size: 14px;
+            color: #334155;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .action-bar {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-report {
+            background-color: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-report:hover {
+            background-color: #059669;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+        }
+
+        /* A4橫式列印專用報告區域 - 預設在網頁上隱藏 */
+        #print-report-area {
+            display: none;
+        }
+
+        /* 列印媒體樣式 */
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+                color: #000;
+            }
+            .container {
+                display: none !important; /* 隱藏原本的輸入畫面 */
+            }
+            #print-report-area {
+                display: block !important;
+                width: 297mm;
+                height: 210mm;
+                padding: 20mm 15mm;
+                box-sizing: border-box;
+                position: relative;
+                background: #fff;
+                page-break-after: avoid;
+            }
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+            
+            .print-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                border-bottom: 3px solid #005598;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+            .print-title {
+                color: #005598;
+                font-size: 28px;
+                font-weight: bold;
+            }
+            .print-copyright {
+                font-size: 12px;
+                color: #555;
+                text-align: right;
+            }
+            .print-meta-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 12px;
+                margin-bottom: 25px;
+                background: #f8fafc;
+                padding: 15px;
+                border-radius: 6px;
+                border: 1px solid #e2e8f0;
+            }
+            .print-meta-item {
+                font-size: 14px;
+            }
+            .print-meta-item span {
+                font-weight: bold;
+                color: #334155;
+            }
+            .print-main-results {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                margin-bottom: 25px;
+            }
+            .print-box {
+                border: 2px solid #cbd5e1;
+                border-radius: 8px;
+                padding: 20px;
+                text-align: center;
+            }
+            .print-box.highlight {
+                border-color: #e11d48;
+                background-color: #fff1f2;
+            }
+            .print-box.success {
+                border-color: #16a34a;
+                background-color: #f0fdf4;
+            }
+            .print-box-label {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                color: #1e293b;
+            }
+            .print-box-value {
+                font-size: 32px;
+                font-weight: 800;
+            }
+            .print-box.highlight .print-box-value { color: #e11d48; }
+            .print-box.success .print-box-value { color: #16a34a; }
+            
+            .print-formula-section {
+                margin-bottom: 25px;
+            }
+            .print-section-title {
+                font-size: 16px;
+                font-weight: bold;
+                color: #005598;
+                margin-bottom: 10px;
+                border-left: 4px solid #005598;
+                padding-left: 8px;
+            }
+            .print-formula-content {
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                padding: 15px;
+                border-radius: 6px;
+                font-size: 14px;
+                line-height: 1.6;
+                white-space: pre-wrap;
+            }
+            .print-footer {
+                position: absolute;
+                bottom: 15mm;
+                left: 15mm;
+                right: 15mm;
+                text-align: center;
+                font-size: 12px;
+                color: #64748b;
+                border-top: 1px solid #e2e8f0;
+                padding-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="header-title">
+                <h1>太平洋房屋友成幸福團隊</h1>
+                <p>房地合一稅試算系統</p>
+            </div>
+            <div class="copyright">
+                Copyright © 2026 黃立鈞
+            </div>
+        </header>
+
+        <form id="taxForm" onsubmit="event.preventDefault(); calculateTax();">
+            <div class="grid-2">
+                <div class="form-group">
+                    <label for="address">1. 物件地址</label>
+                    <input type="text" id="address" placeholder="請輸入房屋完整地址" required>
+                </div>
+                <div class="form-group">
+                    <label for="reporter">2. 製作報告人名字</label>
+                    <input type="text" id="reporter" placeholder="請輸入您的姓名" required>
+                </div>
+                <div class="form-group">
+                    <label for="sellPrice">3. 預估賣屋成交價 (萬元)</label>
+                    <input type="number" id="sellPrice" min="0" step="any" placeholder="請輸入成交總價" required>
+                </div>
+                <div class="form-group">
+                    <label for="buyPrice">4. 購屋價 / 取得成本 (萬元)</label>
+                    <input type="number" id="buyPrice" min="0" step="any" placeholder="請輸入買入原始總價" required>
+                </div>
+                <div class="form-group">
+                    <label for="holdTime">5. 持有時間</label>
+                    <select id="holdTime" onchange="toggleSelfUseCheckbox()" required>
+                        <option value="45">持有 2 年以內 (稅率 45%)</option>
+                        <option value="35">持有 超過 2 年，未滿 5 年 (稅率 35%)</option>
+                        <option value="20">持有 超過 5 年，未滿 10 年 (稅率 20%)</option>
+                        <option value="15">持有 超過 10 年 (稅率 15%)</option>
+                        <option value="10">持有 滿 6 年以上且符合自住條件 (稅率 10% + 400萬免稅額)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="landPrice">6. 土地漲價總數額 (萬元)</label>
+                    <input type="number" id="landPrice" min="0" step="any" value="0" placeholder="依土增稅單為主，若無請填0">
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="acquireExpenses">7. 購入房地達可供使用狀態前支付之必要費用 (萬元)</label>
+                    <div class="label-desc">包含：契稅、印花稅、代書費、規費、公證費、仲介費等；移轉登記完成前貸款利息；取得後非2年內耗竭之增置改良修繕費。</div>
+                    <input type="number" id="acquireExpenses" min="0" step="any" value="0" placeholder="請填寫加總金額，若無請填0">
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="transferExpenses">8. 賣屋移轉費用 (萬元)</label>
+                    <div class="label-desc">包含：交易支付之仲介費、廣告費、清潔費、搬運費等。若不輸入數值，系統將自動按「成交價 × 3%（上限30萬）」推計。</div>
+                    <input type="number" id="transferExpenses" min="0" step="any" placeholder="留空則由系統自動推計（3%，上限30萬）">
+                </div>
+
+                <div class="form-group full-width" id="selfUseConditionGroup" style="display:none;">
+                    <label>9. 自住房地優惠資格自我核對</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cond1">
+                            <label for="cond1" class="label-desc">個人或其配偶、未成年子女辦竣戶籍登記、持有並居住於該房屋連續滿6年。</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cond2">
+                            <label for="cond2" class="label-desc">交易前6年內，無出租、供營業或執行業務使用。</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cond3">
+                            <label for="cond3" class="label-desc">個人與其配偶及未成年子女於交易前6年內未曾適用自住房地免稅優惠。</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-calc">開始試算房地合一稅</button>
+        </form>
+
+        <div class="results-section" id="resultsArea" style="display: none;">
+            <div class="result-main-title">試算結果</div>
+            
+            <div class="result-card">
+                <div class="result-row">
+                    <div class="result-label">房地合一稅額</div>
+                    <div class="result-value tax-amount" id="resTax">0 萬元</div>
+                </div>
+                <div class="result-row">
+                    <div class="result-label">屋主實際淨收益</div>
+                    <div class="result-value profit-amount" id="resProfit">0 萬元</div>
+                </div>
+            </div>
+
+            <div class="result-main-title">試算計算式明細</div>
+            <div class="formula-box" id="resFormula">
+                計算式將於填寫完畢點選試算後呈現。
+            </div>
+
+            <div class="action-bar">
+                <button class="btn-report" onclick="generateReport()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    製成報告 (A4橫式列印)
+                </button>
+            </div>
+        </div>
+
+        <footer>
+            備註：本試算表僅供參考，請以專業代書或會計、稅務計算為主。
+        </footer>
+    </div>
+
+    <!-- A4橫式列印專用報告區 -->
+    <div id="print-report-area">
+        <div class="print-header">
+            <div class="print-title">太平洋房屋友成幸福團隊 房地合一稅試算</div>
+            <div class="print-copyright">Copyright © 2026 黃立鈞</div>
+        </div>
+        
+        <div class="print-meta-grid">
+            <div class="print-meta-item">物件地址：<span id="p-address">-</span></div>
+            <div class="print-meta-item">報告製作人：<span id="p-reporter">-</span></div>
+            <div class="print-meta-item">試算日期：<span id="p-date">-</span></div>
+            <div class="print-meta-item">持有稅率判定：<span id="p-rate">-</span></div>
+        </div>
+
+        <div class="print-main-results">
+            <div class="print-box highlight">
+                <div class="print-box-label">房地合一稅額</div>
+                <div class="print-box-value" id="p-tax">0 萬元</div>
+            </div>
+            <div class="print-box success">
+                <div class="print-box-label">屋主實際實收益</div>
+                <div class="print-box-value" id="p-profit">0 萬元</div>
+            </div>
+        </div>
+
+        <div class="print-formula-section">
+            <div class="print-section-title">試算計算式明細</div>
+            <div class="print-formula-content" id="p-formula">-</div>
+        </div>
+
+        <div class="print-footer">
+            備註: 本試算表僅供參考,請以專業代書或會計、稅務計算為主
+        </div>
+    </div>
+
+    <script>
+        function toggleSelfUseCheckbox() {
+            const holdTimeSelect = document.getElementById('holdTime');
+            const selfUseGroup = document.getElementById('selfUseConditionGroup');
+            if (holdTimeSelect.value === '10') {
+                selfUseGroup.style.display = 'block';
+            } else {
+                selfUseGroup.style.display = 'none';
+            }
+        }
+
+        // 全域計算結果變數，方便列印時讀取
+        let calcData = null;
+
+        function calculateTax() {
+            // 讀取輸入值
+            const address = document.getElementById('address').value;
+            const reporter = document.getElementById('reporter').value;
+            const sellPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
+            const buyPrice = parseFloat(document.getElementById('buyPrice').value) || 0;
+            const landPrice = parseFloat(document.getElementById('landPrice').value) || 0;
+            const acquireExpenses = parseFloat(document.getElementById('acquireExpenses').value) || 0;
+            
+            let transferExpensesRaw = document.getElementById('transferExpenses').value;
+            let transferExpenses = 0;
+            let isTransferEstimated = false;
+
+            // 規則6：如果沒輸入任何數值,才能以成交價額3%計算，以 30 萬元為限
+            if (transferExpensesRaw.trim() === "") {
+                transferExpenses = sellPrice * 0.03;
+                if (transferExpenses > 30) {
+                    transferExpenses = 30;
+                }
+                isTransferEstimated = true;
+            } else {
+                transferExpenses = parseFloat(transferExpensesRaw) || 0;
+            }
+
+            const holdType = document.getElementById('holdTime').value;
+            let taxRate = 0;
+            let isSelfUse = false;
+            let taxRateText = "";
+
+            if (holdType === '45') { taxRate = 0.45; taxRateText = "2年內(45%)"; }
+            else if (holdType === '35') { taxRate = 0.35; taxRateText = "超過2年未滿5年(35%)"; }
+            else if (holdType === '20') { taxRate = 0.20; taxRateText = "超過5年未滿10年(20%)"; }
+            else if (holdType === '15') { taxRate = 0.15; taxRateText = "超過10年(15%)"; }
+            else if (holdType === '10') { 
+                taxRate = 0.10; 
+                isSelfUse = true; 
+                taxRateText = "符合自住滿6年優惠(10%)";
+            }
+
+            // 核心公式計算
+            // 課稅所得 = 成交價 - 取得成本 - 必要費用 - 賣屋移轉費用 - 土地漲價總數額
+            let totalExpenses = acquireExpenses + transferExpenses;
+            let taxableIncome = sellPrice - buyPrice - totalExpenses - landPrice;
+            if (taxableIncome < 0) taxableIncome = 0;
+
+            let selfUseDeductionText = "";
+            let finalTaxableIncome = taxableIncome;
+            let taxAmount = 0;
+
+            if (isSelfUse) {
+                // 規則7：自住房地免稅額,最多以400萬元為上限
+                if (taxableIncome > 400) {
+                    finalTaxableIncome = taxableIncome - 400;
+                    taxAmount = finalTaxableIncome * 0.10;
+                    selfUseDeductionText = "扣除自住免稅額 400 萬元後，餘額 " + finalTaxableIncome.toFixed(2) + " 萬元適用 10% 稅率";
+                } else {
+                    finalTaxableIncome = 0;
+                    taxAmount = 0;
+                    selfUseDeductionText = "課稅所得未達 400 萬元，享全額免稅";
+                }
+            } else {
+                taxAmount = taxableIncome * taxRate;
+            }
+
+            // 屋主實際淨收益 = 賣屋成交價 - 購屋價(取得成本) - 必要費用 - 賣屋移轉費用 - 房地合一稅
+            let netProfit = sellPrice - buyPrice - acquireExpenses - transferExpenses - taxAmount;
+
+            // 建立詳細計算式說明文字
+            let formulaText = "";
+            formulaText += "【第一步：計算課稅所得額】\n";
+            formulaText += `  課稅所得 = 賣屋成交價(${sellPrice}萬) - 購屋價(${buyPrice}萬) - 必要費用(${acquireExpenses}萬) - 賣屋移轉費用(${transferExpenses.toFixed(2)}萬${isTransferEstimated ? '，無輸入依3%推計' : ''}) - 土地漲價總數額(${landPrice}萬)\n`;
+            formulaText += `  => 原始課稅所得 = ${taxableIncome.toFixed(2)} 萬元\n\n`;
+
+            formulaText += "【第二步：判定適用稅率與免稅額】\n";
+            formulaText += `  持有時間判定：${taxRateText}\n`;
+            if (isSelfUse) {
+                formulaText += `  自住優惠要件：\n  (1) 設籍並居住滿6年  (2) 6年內無出租營業  (3) 6年內未曾適用\n`;
+                formulaText += `  => ${selfUseDeductionText}\n`;
+            }
+            formulaText += `  => 應納房地合一稅額 = ${taxAmount.toFixed(2)} 萬元\n\n`;
+
+            formulaText += "【第三步：計算屋主實際實收益】\n";
+            formulaText += `  實際實收益 = 賣屋成交價(${sellPrice}萬) - 購屋價(${buyPrice}萬) - 必要費用(${acquireExpenses}萬) - 賣屋移轉費用(${transferExpenses.toFixed(2)}萬) - 房地合一稅(${taxAmount.toFixed(2)}萬)\n`;
+            formulaText += `  => 屋主實際實收益 = ${netProfit.toFixed(2)} 萬元`;
+
+            // 更新網頁上的顯示
+            document.getElementById('resTax').innerText = taxAmount.toFixed(2) + " 萬元";
+            document.getElementById('resProfit').innerText = netProfit.toFixed(2) + " 萬元";
+            document.getElementById('resFormula').innerText = formulaText;
+            document.getElementById('resultsArea').style.display = 'block';
+
+            // 儲存計算結果供列印報表讀取
+            calcData = {
+                address: address,
+                reporter: reporter,
+                date: new Date().toLocaleDateString('zh-TW'),
+                rateText: taxRateText + (isSelfUse ? " (符合400萬免稅額)" : ""),
+                tax: taxAmount.toFixed(2) + " 萬元",
+                profit: netProfit.toFixed(2) + " 萬元",
+                formula: formulaText
+            };
+
+            // 滾動到結果區域
+            document.getElementById('resultsArea').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function generateReport() {
+            if (!calcData) {
+                alert("請先輸入上方資訊並點選『開始試算房地合一稅』。");
+                return;
+            }
+
+            // 將試算資料填入列印專用的 A4 區塊
+            document.getElementById('p-address').innerText = calcData.address;
+            document.getElementById('p-reporter').innerText = calcData.reporter;
+            document.getElementById('p-date').innerText = calcData.date;
+            document.getElementById('p-rate').innerText = calcData.rateText;
+            document.getElementById('p-tax').innerText = calcData.tax;
+            document.getElementById('p-profit').innerText = calcData.profit;
+            document.getElementById('p-formula').innerText = calcData.formula;
+
+            // 啟動瀏覽器內建的列印功能（搭配 CSS @media print 達到完美一張 A4 橫式效果）
+            window.print();
+        }
+    </script>
+</body>
+</html>
