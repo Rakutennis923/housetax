@@ -21,23 +21,33 @@
             padding-bottom: 40px;
         }
 
-        /* 網頁最上方標題 (突顯不同團隊顏色) */
+        /* 網頁最上方標題 - 電腦版置中與兩端對齊黃金結構 */
         .header-banner {
             background-color: #2828FF; /* 深色暖底 */
             color: #ffffff;
-            padding: 15px 30px;
+            padding: 15px 40px; /* 增加左右留白距離 */
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
+        /* 透過三個區塊的 Flex 權重，達成標題絕對置中 */
+        .header-spacer-left {
+            flex: 1;
+            display: block;
+        }
+
         .title-group {
             font-size: 26px;
             font-weight: bold;
             letter-spacing: 1px;
-            display: flex;
-            align-items: center;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .title-group span {
+            display: inline-block;
         }
 
         .color-pacific {
@@ -56,15 +66,16 @@
 
         /* 右上角微小版權 */
         .top-copyright {
-            font-size: 11px;
+            flex: 1;
+            text-align: right;
+            font-size: 12px;
             color: #FFFF37;
             font-weight: normal;
-            text-align: right;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         .top-copyright span {
-            display: inline;
+            display: inline-block;
         }
 
         /* 主要佈局框架 */
@@ -266,29 +277,8 @@
             padding: 0 20px;
         }
 
-        /* ==========================================
-           🚀 手機或移動式平板 RWD 切換規則
-           ========================================== */
+        /* 手機或移動式平板 RWD 切換範圍 */
         @media (max-width: 992px) {
-            /* 頂部標題強制三行獨立顯示 */
-            .title-group {
-                flex-direction: column;
-                align-items: flex-start;
-                font-size: 20px; /* 手機版字體略微縮放更精緻 */
-                line-height: 1.5;
-            }
-            .color-pacific, .color-team {
-                margin-right: 0;
-                margin-bottom: 2px;
-            }
-
-            /* 右上角版權強制兩行獨立顯示 */
-            .top-copyright span {
-                display: block;
-                margin-bottom: 2px;
-            }
-
-            /* 主要內容區改為上下堆疊 */
             .layout-grid {
                 flex-direction: column;
             }
@@ -297,6 +287,44 @@
             }
             .result-bg {
                 position: static;
+            }
+        }
+
+        /* 專屬手機端標題與版權斷行排版優化 (低於 768px 觸發) */
+        @media (max-width: 768px) {
+            .header-banner {
+                flex-direction: column;
+                gap: 12px;
+                padding: 20px 15px;
+            }
+            
+            .header-spacer-left {
+                display: none; /* 手機端隱藏靠左對齊用的空白塊 */
+            }
+
+            .title-group {
+                font-size: 22px;
+                white-space: normal;
+            }
+
+            /* 強制標題文字在手機上分為三行 */
+            .title-group span {
+                display: block;
+                margin-right: 0;
+                margin-bottom: 4px;
+            }
+            .title-group span:last-child {
+                margin-bottom: 0;
+            }
+
+            /* 強制版權在手機上分為兩行並置中 */
+            .top-copyright {
+                text-align: center;
+                font-size: 12px;
+            }
+            .top-copyright span {
+                display: block;
+                margin-bottom: 2px;
             }
         }
 
@@ -481,14 +509,14 @@
 <body>
 
     <header class="header-banner">
+        <div class="header-spacer-left"></div>
         <div class="title-group">
             <span class="color-pacific">太平洋房屋</span>
             <span class="color-team">友成幸福團隊</span>
             <span class="color-text">房地合一稅2.0試算</span>
         </div>
         <div class="top-copyright">
-            <span>Copyright © 2026</span>
-            <span>黃立鈞</span>
+            <span>Copyright © 2026</span> <span>黃立鈞</span>
         </div>
     </header>
 
@@ -571,7 +599,7 @@
 
                 <div class="panel-right">
                     <div class="card-box result-bg">
-                        <div class="result-main-title">📊 即時動態估算結果</div>
+                        <div class="result-main-title">📊 即時動態估算</div>
 
                         <div class="output-item">
                             <div class="output-lbl">1. 房地合一稅</div>
