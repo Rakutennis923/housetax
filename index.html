@@ -311,7 +311,7 @@
 
 
         /* ==========================================
-           2. 🚀 列印外觀修正與 A4 單頁縮放優化
+           2. 🚀 列印外觀修正與 A4 單頁極限縮減優化
            ========================================== */
         .print-only-report {
             display: none;
@@ -323,31 +323,25 @@
                 display: none !important;
             }
 
-            /* 強制設定單頁滿版，防止產生第二頁空白 */
+            /* 修正：釋放高度鎖死，改用 page-break 進行精準單頁控制 */
             html, body {
                 background-color: #ffffff !important;
-                height: 100% !important;
-                max-height: 100vh !important;
-                overflow: hidden !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
 
-            /* 顯示純列印報告結構 */
             .print-only-report {
                 display: block !important;
                 width: 100%;
-                height: 100%;
                 box-sizing: border-box;
             }
 
-            /* 嚴格縮放於 A4 直式標準範圍內 */
+            /* 標準 A4 範圍縮減內距，保留高度給底部重要總結 */
             .print-page {
                 width: 100%;
-                height: 100vh;
-                padding: 1.2cm 1.5cm;
+                padding: 0.8cm 1.2cm;
                 box-sizing: border-box;
                 display: flex;
                 flex-direction: column;
@@ -357,14 +351,14 @@
             }
 
             .print-header {
-                border-bottom: 3px solid #333333;
-                padding-bottom: 8px;
-                margin-bottom: 15px;
+                border-bottom: 2.5px solid #333333;
+                padding-bottom: 5px;
+                margin-bottom: 10px;
                 text-align: center;
             }
 
             .print-title {
-                font-size: 22px;
+                font-size: 20px;
                 font-weight: bold;
                 color: #000000;
             }
@@ -372,13 +366,13 @@
             .print-meta-table {
                 width: 100%;
                 border-collapse: collapse;
-                margin-bottom: 15px;
+                margin-bottom: 10px;
                 table-layout: fixed;
             }
 
             .print-meta-table td {
-                padding: 4px 0;
-                font-size: 14px;
+                padding: 3px 0;
+                font-size: 13px;
                 color: #000000;
                 vertical-align: middle;
             }
@@ -388,37 +382,37 @@
             }
 
             .print-meta-table .enlarged {
-                font-size: 18px;
+                font-size: 16px;
                 font-weight: bold;
             }
 
             .print-section-title {
-                font-size: 14px;
+                font-size: 13px;
                 font-weight: bold;
                 background-color: #f5f5f5 !important;
-                padding: 5px 10px;
-                border-left: 5px solid #333333;
-                margin-top: 15px;
-                margin-bottom: 8px;
+                padding: 4px 8px;
+                border-left: 4px solid #333333;
+                margin-top: 10px;
+                margin-bottom: 6px;
                 color: #000000;
             }
 
             .print-data-table {
                 width: 100%;
                 border-collapse: collapse;
-                margin-bottom: 10px;
+                margin-bottom: 6px;
             }
 
             .print-data-table td {
-                padding: 6px 10px;
+                padding: 4px 8px;
                 border-bottom: 1px solid #e0e0e0;
-                font-size: 13px;
+                font-size: 12px;
                 color: #000000;
             }
 
             .print-data-table td.lbl {
                 font-weight: bold;
-                width: 45%;
+                width: 48%;
             }
 
             .print-data-table td.val {
@@ -426,24 +420,25 @@
                 font-family: Arial, sans-serif;
             }
 
+            /* 縮小計算式區塊的字型與行高，釋放垂直空間 */
             .print-formula-block {
                 background-color: #fafafa !important;
                 border: 1px solid #cccccc;
-                padding: 10px;
+                padding: 8px 10px;
                 border-radius: 4px;
                 font-family: Monaco, Consolas, monospace;
-                font-size: 12px;
-                line-height: 1.4;
+                font-size: 11px;
+                line-height: 1.35;
                 white-space: pre-wrap;
                 color: #000000;
             }
 
-            /* 核心計算結果 */
+            /* 核心重要數據區塊 */
             .print-result-card {
                 border: 2px solid #000000;
                 background-color: #ffffff !important;
-                padding: 12px 20px;
-                margin-top: 15px;
+                padding: 10px 18px;
+                margin-top: 10px;
                 border-radius: 6px;
             }
 
@@ -451,7 +446,7 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 6px 0;
+                padding: 4px 0;
                 border-bottom: 1px dashed #cccccc;
             }
 
@@ -460,13 +455,13 @@
             }
 
             .print-res-lbl {
-                font-size: 16px;
+                font-size: 14px;
                 font-weight: bold;
                 color: #000000;
             }
 
             .print-res-val-grand {
-                font-size: 24px;
+                font-size: 22px;
                 font-weight: bold;
                 font-family: Arial, sans-serif;
                 color: #000000;
@@ -474,11 +469,11 @@
 
             .print-disclaimer {
                 border-top: 1px solid #cccccc;
-                padding-top: 8px;
+                padding-top: 6px;
                 text-align: center;
                 font-size: 11px;
                 color: #555555;
-                margin-top: 10px;
+                margin-top: 8px;
             }
 
             @page {
@@ -616,6 +611,7 @@
     </footer>
 
 
+    <!-- 純列印外觀報告結構 -->
     <div class="print-only-report">
         <div class="print-page">
             <div>
@@ -761,34 +757,34 @@
             document.getElementById('out-tax').innerText = formatDec(finalTaxResult) + " 萬元";
             document.getElementById('out-profit').innerText = formatDec(finalRealProfit) + " 萬元";
 
-            let formulaString = `【步驟 1：核算房地合一稅基】\n`;
-            formulaString += `公式：售價(${sellPrice}) - 成本(${buyPrice}) - 必要費(${acquireFee}) - 移轉費(${formatDec(transferFee)}) - 土地漲價(${landUpAmount})\n`;
-            formulaString += `＝ 減免前所得總額：${formatDec(originalBasisBeforeExempt)} 萬元\n`;
+            // 精簡明細內容，釋放 A4 的高度垂直空間
+            let formulaString = `【步驟 1：核算稅基】\n`;
+            formulaString += `售價(${sellPrice}) - 成本(${buyPrice}) - 必要費(${acquireFee}) - 移轉費(${formatDec(transferFee)}) - 土地漲價(${landUpAmount})\n`;
+            formulaString += `＝ 減免前所得：${formatDec(originalBasisBeforeExempt)} 萬元\n`;
             
             if (isOver6Years) {
                 if (isSelfUseQualified) {
-                    formulaString += `（滿足自用滿6年3要件，扣減免稅額 -400 萬元）\n`;
+                    formulaString += `（滿足自用6年3要件，扣減免稅額 -400 萬元）\n`;
                 } else {
-                    formulaString += `（持有滿6年，但自住3項法定要件未完全符合，無法扣除免稅額）\n`;
+                    formulaString += `（持有滿6年，但自住條件未全符合，無法扣除免稅額）\n`;
                 }
             } else {
-                formulaString += `（持有時間未超過 6 年，不適用自用免稅額優惠）\n`;
+                formulaString += `（持有未滿 6 年，不適用自用免稅優惠）\n`;
             }
-            formulaString += `＝ 最終核定課稅稅基：${formatDec(netIncomeBasis)} 萬元\n\n`;
+            formulaString += `＝ 最終核定稅基：${formatDec(netIncomeBasis)} 萬元\n\n`;
 
             if (originalBasisBeforeExempt <= 0 || netIncomeBasis === 0) {
-                formulaString += `※ 法令備註：所得減除後為負數或零，稅基與稅金歸零。\n\n`;
+                formulaString += `※ 備註：所得為負數或零，稅基與稅金歸零。\n\n`;
             }
 
-            formulaString += `【步驟 2：結算預估房地合一稅】\n`;
-            formulaString += `核定適用稅率：${targetRate}%\n`;
-            formulaString += `應納稅額 = 最終稅基(${formatDec(netIncomeBasis)}) × 稅率(${targetRate}%) = ${formatDec(finalTaxResult)} 萬元\n\n`;
-            formulaString += `【步驟 3：屋主最終實際落袋手頭實收益】\n`;
-            formulaString += `實收益 = 售價(${sellPrice}) - 成本(${buyPrice}) - 總費用(${formatDec(totalAllFees)}) - 房地合一稅(${formatDec(finalTaxResult)})\n`;
+            formulaString += `【步驟 2：結算房地合一稅】\n`;
+            formulaString += `核定稅率：${targetRate}% ｜ 應納稅額 = 稅基(${formatDec(netIncomeBasis)}) × ${targetRate}% = ${formatDec(finalTaxResult)} 萬元\n\n`;
+            formulaString += `【步驟 3：屋主實際實收益】\n`;
+            formulaString += `實收益 = 售價(${sellPrice}) - 成本(${buyPrice}) - 總費用(${formatDec(totalAllFees)}) - 稅額(${formatDec(finalTaxResult)})\n`;
             formulaString += `＝ 屋主預估淨實收益：${formatDec(finalRealProfit)} 萬元`;
 
             if (isTransferAutoEstimated) {
-                formulaString += `\n(提示：移轉費用未填，已依規定啟動售價3%即 ${formatDec(transferFee)} 萬元計入必要扣除)`;
+                formulaString += `\n(提示：移轉費未填，已自動啟動售價 3% 即 ${formatDec(transferFee)} 萬元計算)`;
             }
 
             document.getElementById('out-formula').innerText = formulaString;
