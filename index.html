@@ -36,6 +36,8 @@
             font-size: 26px;
             font-weight: bold;
             letter-spacing: 1px;
+            display: flex;
+            align-items: center;
         }
 
         .color-pacific {
@@ -45,6 +47,7 @@
 
         .color-team {
             color: #FFD700; /* 友成幸福團隊溫暖橘 */
+            margin-right: 8px;
         }
 
         .color-text {
@@ -56,6 +59,12 @@
             font-size: 11px;
             color: #FFFF37;
             font-weight: normal;
+            text-align: right;
+            line-height: 1.4;
+        }
+
+        .top-copyright span {
+            display: inline;
         }
 
         /* 主要佈局框架 */
@@ -257,8 +266,29 @@
             padding: 0 20px;
         }
 
-        /* 手機或移動式平板 RWD 切換 */
+        /* ==========================================
+           🚀 手機或移動式平板 RWD 切換規則
+           ========================================== */
         @media (max-width: 992px) {
+            /* 頂部標題強制三行獨立顯示 */
+            .title-group {
+                flex-direction: column;
+                align-items: flex-start;
+                font-size: 20px; /* 手機版字體略微縮放更精緻 */
+                line-height: 1.5;
+            }
+            .color-pacific, .color-team {
+                margin-right: 0;
+                margin-bottom: 2px;
+            }
+
+            /* 右上角版權強制兩行獨立顯示 */
+            .top-copyright span {
+                display: block;
+                margin-bottom: 2px;
+            }
+
+            /* 主要內容區改為上下堆疊 */
             .layout-grid {
                 flex-direction: column;
             }
@@ -334,7 +364,7 @@
                 width: 100%;
                 border-collapse: collapse;
                 margin-bottom: 15px;
-                table-layout: fixed; /* 固定分配比例 */
+                table-layout: fixed;
             }
 
             .print-meta-table td {
@@ -344,7 +374,6 @@
                 vertical-align: middle;
             }
 
-            /* 強制文字不折行且避免被擠壓 */
             .print-meta-table .nobr {
                 white-space: nowrap;
             }
@@ -400,7 +429,6 @@
                 color: #000000;
             }
 
-            /* 核心計算結果：框線強化 */
             .print-result-card {
                 border: 2px solid #000000;
                 background-color: #ffffff !important;
@@ -458,7 +486,10 @@
             <span class="color-team">友成幸福團隊</span>
             <span class="color-text">房地合一稅2.0試算</span>
         </div>
-        <div class="top-copyright">Copyright © 2026 黃立鈞</div>
+        <div class="top-copyright">
+            <span>Copyright © 2026</span>
+            <span>黃立鈞</span>
+        </div>
     </header>
 
     <main class="main-wrapper">
@@ -497,7 +528,7 @@
                         <div class="form-group">
                             <label>6. 賣屋移轉費用 (萬元)</label>
                             <input type="number" id="in-transfer-fee" placeholder="如仲介費、廣告費。若留空不填，系統將自動啟動3%法定推計" min="0" oninput="doCalculate()">
-                            <div class="hint-text" style="color: #b45309;" font-weight: bold;>※ 註：若此欄位完全沒輸入任何數值，將自動按成交價額 3% 計算 (上限 30 萬元)。</div>
+                            <div class="hint-text">※ 註：若此欄位完全沒輸入任何數值，系統將自動按成交價額 3% 計算 (上限 30 萬元)。</div>
                         </div>
 
                         <div class="form-group">
@@ -578,7 +609,7 @@
         <div class="print-page">
             <div>
                 <div class="print-header">
-                    <div class="print-title">太平洋房屋 友成幸福團隊 房地合一稅2.0試算參考報告</div>
+                    <div class="print-title">太平洋房屋 友成幸福團隊 房地合一稅試算參考報告</div>
                 </div>
 
                 <table class="print-meta-table">
